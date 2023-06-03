@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<title>4 Colors</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script src="four_colors.js"></script>
+</head>
+<body>
+	<canvas id="canvas" width="512" height="512"></canvas>
+	<br/>
+	<button id="col1" class="button"></button>
+	<button id="col2" class="button"></button>
+	<button id="col3" class="button"></button>
+	<button id="col4" class="button"></button>
+
+	<script>
+		
+
+		b_c1 = document.getElementById("col1");
+		b_c2 = document.getElementById("col2");
+		b_c3 = document.getElementById("col3");
+		b_c4 = document.getElementById("col4");
+
+		var buttons = [b_c1, b_c2, b_c3, b_c4];
+		var paint_colors = ['#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd' ];
+
+		for (var i = 0; i < 4; i++)
+			buttons[i].style.backgroundColor = paint_colors[i];
+
+		var canvas = new FourColors("canvas", paint_colors);
+		
+		b_c1.onclick = function() { 
+			canvas.PaintCol = 0;
+		}
+		b_c2.onclick = function() { 
+			canvas.PaintCol = 1;
+		}
+		b_c3.onclick = function() { 
+			canvas.PaintCol = 2;
+		}
+		b_c4.onclick = function() { 
+			canvas.PaintCol = 3;
+		}
+
+		// Select first color as default
+		canvas.PaintCol = 0;
+
+	</script>
+
+	
+</body>
