@@ -4,69 +4,90 @@
 	<meta charset="utf-8">
 	<title>4 Colors</title>
 	<link rel="stylesheet" href="style.css">
+	<link rel="icon" href="icon.png">
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="four_colors.js"></script>
 </head>
 <body>
-	<canvas id="canvas" width="512" height="512"></canvas>
-	<br/>
-	<button id="col0" class="button"></button>
-	<button id="col1" class="button"></button>
-	<button id="col2" class="button"></button>
-	<button id="col3" class="button"></button>
-	<button id="col4" class="button"></button>
-	<br/>
-	<p id="timer"></p>
 
-	<div id="congrats-box" class="modal">
-		<div class="modal-content">
-			<span class="close" id="closebtn">&times;</span>
-			<p>Congratulations!!</p>
+	<div class="container">
+		<div class="button-group">
+			<button id="easy" class="button">Facil</button>
+			<button id="medium" class="button">Medio</button>
+			<button id="hard" class="button">Dificil</button>
 		</div>
+
+		<canvas id="canvas" width="100" height="100"></canvas>
+		<br/>
 		
+		<div class="button-group">
+			<button id="col1" class="button"></button>
+			<button id="col2" class="button"></button>
+			<button id="col3" class="button"></button>
+			<button id="col4" class="button"></button>
+			<button id="col0" class="button"></button>
+		</div>
+		<p id="timer"></p>
+
+		<div id="congrats-box" class="modal">
+			<div class="modal-content">
+				<span class="close" id="closebtn">&times;</span>
+				<p>Congratulations!!</p>
+			</div>
+			
+		</div>
+
+		<script>
+			
+			b_c0 = document.getElementById("col0");
+			b_c1 = document.getElementById("col1");
+			b_c2 = document.getElementById("col2");
+			b_c3 = document.getElementById("col3");
+			b_c4 = document.getElementById("col4");
+
+			var buttons = [b_c0, b_c1, b_c2, b_c3, b_c4];
+			var paint_colors = ['white', '#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd' ];
+
+			for (var i = 0; i < buttons.length; i++)
+				buttons[i].style.backgroundColor = paint_colors[i];
+
+			canvas_obj = document.getElementById("canvas");
+			var s = getComputedStyle(canvas_obj);
+			var w = s.width.split('px')[0];
+			var h = s.height.split('px')[0];
+			canvas_obj.width = w;
+			canvas_obj.height = h;
+			
+
+			var canvas = new FourColors("canvas", paint_colors);
+			
+			function setColor(i)
+			{
+				buttons.forEach(b => {
+					b.classList.remove('active');
+				});
+				buttons[i].classList.add('active');
+				canvas.PaintCol = i;
+			}
+
+			b_c0.onclick = function() { setColor(0); }
+			b_c1.onclick = function() { setColor(1); }
+			b_c2.onclick = function() { setColor(2); }
+			b_c3.onclick = function() { setColor(3); }
+			b_c4.onclick = function() { setColor(4); }
+
+			// Select first color as default
+			setColor(1);
+
+			var modal = document.getElementById("congrats-box");
+			var span = document.getElementById("closebtn");
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+
+		</script>
+
 	</div>
-
-	<script>
-		
-		b_c0 = document.getElementById("col0");
-		b_c1 = document.getElementById("col1");
-		b_c2 = document.getElementById("col2");
-		b_c3 = document.getElementById("col3");
-		b_c4 = document.getElementById("col4");
-
-		var buttons = [b_c0, b_c1, b_c2, b_c3, b_c4];
-		var paint_colors = ['white', '#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd' ];
-
-		for (var i = 0; i < buttons.length; i++)
-			buttons[i].style.backgroundColor = paint_colors[i];
-
-		var canvas = new FourColors("canvas", paint_colors);
-		
-		function setColor(i)
-		{
-			buttons.forEach(b => {
-				b.classList.remove('active');
-			});
-			buttons[i].classList.add('active');
-			canvas.PaintCol = i;
-		}
-
-		b_c0.onclick = function() { setColor(0); }
-		b_c1.onclick = function() { setColor(1); }
-		b_c2.onclick = function() { setColor(2); }
-		b_c3.onclick = function() { setColor(3); }
-		b_c4.onclick = function() { setColor(4); }
-
-		// Select first color as default
-		setColor(1);
-
-		var modal = document.getElementById("congrats-box");
-		var span = document.getElementById("closebtn");
-		span.onclick = function() {
-			modal.style.display = "none";
-		}
-
-	</script>
 
 	
 </body>
