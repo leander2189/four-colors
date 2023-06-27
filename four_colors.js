@@ -1,6 +1,6 @@
 class FourColors
 {
-	constructor(canvasId, colors) 
+	constructor(canvasId, colors, N) 
 	{
         this.PaintColors = colors;
         this.PaintCol = -1;
@@ -15,7 +15,7 @@ class FourColors
         var w = this.canvas.width;
         var h = this.canvas.height;
 
-        this.n = 5;
+        this.n = N;
 
         var positions = Float64Array.from({length: this.n * 2}, (_, i) => Math.random() * (i & 1 ? h : w))
 

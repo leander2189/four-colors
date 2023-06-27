@@ -7,16 +7,70 @@
 	<link rel="icon" href="icon.png">
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="four_colors.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
-	<div class="container">
-		<div class="button-group">
-			<button id="easy" class="button">Facil</button>
-			<button id="medium" class="button">Medio</button>
-			<button id="hard" class="button">Dificil</button>
+	<!-- Intro pop-up -->
+	<div id="help-box" class="modal">
+		<div class="modal-content">
+			<span class="close" id="closebtn_1">&times;</span>
+			<p>Bienvenido a Four colors.</p>
+			<p>El objetivo del juego es colorear por completo el mapa de tal forma que 2 regiones conectadas siempre
+				tengan distinto color.
+			</p>
+			<p></p>
 		</div>
+	</div>
 
+	<!-- Intro pop-up -->
+	<div id="congrats-box" class="modal">
+		<div class="modal-content">
+			<span class="close" id="closebtn_2">&times;</span>
+			<p>Enhorabuena!!</p>
+			<p>Has conseguido completar el mapa en</p>
+			<p id="timer"></p>
+			<p>segundos.</p>
+		</div>
+	</div>
+
+	<!-- About pop-up -->
+	<div id="about-box" class="modal">
+		<div class="modal-content">
+			<span class="close" id="closebtn_3">&times;</span>
+			<p>El teorema de los 4 colores es uno de los resultados más conocidos y llamativos de la teoría de grafos. Este teorema
+				establece que cualquier mapa geográfico en un plano, puede ser coloreado con solo 4 colores de manera que ninguna 
+				región adyacente tenga el mismo color.</p>
+			<p>Este problema fue planteado por primera vez en el siglo XIX, aunque sólo pudo ser demostrado en 1976 utilizando métodos
+				computacionales.</p>
+			<p>Este teorema ha encontrado aplicaciones en diversos campos, como la cartografía, la planificación de horarios y la 
+				asignación de recursos. En resumen, es un resultado sorprendente que lo convierte en uno de los logros más
+				reconocidos y emocionantes en la historia de las matemáticas.</p>
+			<p>Para saber más visita <a href="https://es.wikipedia.org/wiki/Teorema_de_los_cuatro_colores">Teorema de los Cuatro Colores</a></p>
+			<p>Copyright: Leandro Ruiz, 2023</p>
+		</div>
+	</div>
+
+	<div class="container">
+
+		<div class="title_area">
+			<div class="dropdown">
+				<button id="menu" class="dropbtn">
+					<img src="menu.png" width="20px"/>
+				</button>
+				<div class="dropdown-content">
+					<a id="easy">Facil</a>
+					<a id="medium">Medio</a>
+					<a id="hard">Dificil</a>
+					<a id="about">Sobre el juego</a>
+				</div>
+			</div>
+	
+			<div class="title">
+				<h1>FOUR COLORS</h1>
+			</div>
+		</div>
+		
 		<canvas id="canvas" width="100" height="100"></canvas>
 		<br/>
 		
@@ -27,18 +81,17 @@
 			<button id="col4" class="button"></button>
 			<button id="col0" class="button"></button>
 		</div>
-		<p id="timer"></p>
+		
 
-		<div id="congrats-box" class="modal">
-			<div class="modal-content">
-				<span class="close" id="closebtn">&times;</span>
-				<p>Congratulations!!</p>
-			</div>
-			
-		</div>
+
 
 		<script>
 			
+
+
+			var N = 5;
+
+			// Set color buttons
 			b_c0 = document.getElementById("col0");
 			b_c1 = document.getElementById("col1");
 			b_c2 = document.getElementById("col2");
@@ -51,15 +104,16 @@
 			for (var i = 0; i < buttons.length; i++)
 				buttons[i].style.backgroundColor = paint_colors[i];
 
+			// Init canvas size
 			canvas_obj = document.getElementById("canvas");
 			var s = getComputedStyle(canvas_obj);
 			var w = s.width.split('px')[0];
 			var h = s.height.split('px')[0];
 			canvas_obj.width = w;
 			canvas_obj.height = h;
-			
 
-			var canvas = new FourColors("canvas", paint_colors);
+
+			var canvas = new FourColors("canvas", paint_colors, N);
 			
 			function setColor(i)
 			{
@@ -79,11 +133,38 @@
 			// Select first color as default
 			setColor(1);
 
-			var modal = document.getElementById("congrats-box");
-			var span = document.getElementById("closebtn");
-			span.onclick = function() {
-				modal.style.display = "none";
+			// Set pop-up functionality
+			var modal_intro = document.getElementById("help-box");
+			var modal_finish = document.getElementById("congrats-box");
+			var modal_about = document.getElementById("about-box");
+			modal_intro.style.display = "block";
+			document.getElementById("closebtn_1").onclick = function() {
+				modal_intro.style.display = "none";
 			}
+			document.getElementById("closebtn_2").onclick = function() {
+				modal_finish.style.display = "none";
+			}
+			document.getElementById("closebtn_3").onclick = function() {
+				modal_about.style.display = "none";
+			}
+
+			// Set menu funciontionality
+			b_easy = document.getElementById("easy");
+			b_med = document.getElementById("medium");
+			b_hard = document.getElementById("hard");
+			document.getElementById("about").onclick = function() {
+				modal_about.style.display = "block";
+			}
+
+			b_easy.onclick = function() { 
+				canvas = new FourColors("canvas", paint_colors, 8);
+			}
+			b_med.onclick = function() { 
+				canvas = new FourColors("canvas", paint_colors, 30);
+			}
+			b_hard.onclick = function() { 
+				canvas = new FourColors("canvas", paint_colors, 50);
+			 }
 
 		</script>
 
