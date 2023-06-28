@@ -39,11 +39,11 @@
 		<div class="modal-content">
 			<span class="close" id="closebtn_3">&times;</span>
 			<p>El teorema de los 4 colores es uno de los resultados más conocidos y llamativos de la teoría de grafos. Este teorema
-				establece que cualquier mapa geográfico en un plano, puede ser coloreado con solo 4 colores de manera que ninguna 
+				establece que cualquier mapa geográfico en un plano, puede ser coloreado con solo 4 colores de manera que ninguna
 				región adyacente tenga el mismo color.</p>
 			<p>Este problema fue planteado por primera vez en el siglo XIX, aunque sólo pudo ser demostrado en 1976 utilizando métodos
 				computacionales.</p>
-			<p>Este teorema ha encontrado aplicaciones en diversos campos, como la cartografía, la planificación de horarios y la 
+			<p>Este teorema ha encontrado aplicaciones en diversos campos, como la cartografía, la planificación de horarios y la
 				asignación de recursos. En resumen, es un resultado sorprendente que lo convierte en uno de los logros más
 				reconocidos y emocionantes en la historia de las matemáticas.</p>
 			<p>Para saber más visita <a href="https://es.wikipedia.org/wiki/Teorema_de_los_cuatro_colores">Teorema de los Cuatro Colores</a></p>
@@ -65,15 +65,15 @@
 					<a id="about">Sobre el juego</a>
 				</div>
 			</div>
-	
+
 			<div class="title">
 				<h1>FOUR COLORS</h1>
 			</div>
 		</div>
-		
+
 		<canvas id="canvas" width="100" height="100"></canvas>
 		<br/>
-		
+
 		<div class="button-group">
 			<button id="col1" class="button"></button>
 			<button id="col2" class="button"></button>
@@ -81,7 +81,7 @@
 			<button id="col4" class="button"></button>
 			<button id="col0" class="button"></button>
 		</div>
-		
+
 
 
 
@@ -93,8 +93,8 @@
 			var h = s.height.split('px')[0];
 			canvas_obj.width = w;
 			canvas_obj.height = h;
+			var paint_colors = ['white', '#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd'];
 			var canvas = new FourColors("canvas", paint_colors);
-
 
 			// Set color buttons
 			b_c0 = document.getElementById("col0");
@@ -104,13 +104,12 @@
 			b_c4 = document.getElementById("col4");
 
 			var buttons = [b_c0, b_c1, b_c2, b_c3, b_c4];
-			var paint_colors = ['white', '#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd' ];
 
 			for (var i = 0; i < buttons.length; i++)
 				buttons[i].style.backgroundColor = paint_colors[i];
 
 
-			
+
 			function setColor(i)
 			{
 				buttons.forEach(b => {
@@ -145,15 +144,15 @@
 			document.getElementById("about").onclick = function() {
 				modal_about.style.display = "block";
 			}
-			document.getElementById("easy").onclick = function() { 
+			document.getElementById("easy").onclick = function() {
 				canvas.init(8);
 				setColor(1);
 			}
-			document.getElementById("medium").onclick = function() { 
+			document.getElementById("medium").onclick = function() {
 				canvas.init(30);
 				setColor(1);
 			}
-			document.getElementById("hard").onclick = function() { 
+			document.getElementById("hard").onclick = function() {
 				canvas.init(50);
 				setColor(1);
 			}
@@ -166,5 +165,5 @@
 
 	</div>
 
-	
+
 </body>
