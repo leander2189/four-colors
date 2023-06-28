@@ -1,6 +1,6 @@
 class FourColors
 {
-	constructor(canvasId, colors, N) 
+	constructor(canvasId, colors) 
 	{
         this.PaintColors = colors;
         this.PaintCol = -1;
@@ -11,28 +11,7 @@ class FourColors
         this.canvas.addEventListener('click', this.handleMouseClick.bind(this));
 
         // init
-
-        var w = this.canvas.width;
-        var h = this.canvas.height;
-
-        this.n = N;
-
-        var positions = Float64Array.from({length: this.n * 2}, (_, i) => Math.random() * (i & 1 ? h : w))
-
-        this.voronoi = new d3.Delaunay(positions).voronoi([0, 0, w, h])
-
-        this.selected = null;
-        // Init color array
-        this.colors = Array(this.n);
-        for (var i = 0; i < this.n; i++) this.colors[i] = 0;
-
-        this.error = Array(this.n);
-        for (var i = 0; i < this.n; i++) this.error[i] = false;
-
-        this.timeInit = new Date().getTime();
-
-        this.draw();
-
+        /*
         this.clock = setInterval(function(t0){
             var now = new Date().getTime();
             var passed = now - t0;
@@ -41,8 +20,29 @@ class FourColors
             timer.innerHTML = passed / 1000;
 
         }, 1000, this.timeInit);
+        */
 
 	}
+
+    init(N)
+    {
+        var w = this.canvas.width;
+        var h = this.canvas.height;
+
+        this.n = N;
+        var positions = Float64Array.from({length: this.n * 2}, (_, i) => Math.random() * (i & 1 ? h : w))
+        this.voronoi = new d3.Delaunay(positions).voronoi([0, 0, w, h])
+        this.selected = null;
+
+        // Init color array
+        this.colors = Array(this.n);
+        for (var i = 0; i < this.n; i++) this.colors[i] = 0;
+        this.error = Array(this.n);
+        for (var i = 0; i < this.n; i++) this.error[i] = false;
+
+        this.timeInit = new Date().getTime();
+        this.draw();
+    }
 
     handleMouseMove(event) {
         const mouseX = event.clientX - this.canvas.offsetLeft;

@@ -86,10 +86,15 @@
 
 
 		<script>
-			
+			// Init canvas size
+			canvas_obj = document.getElementById("canvas");
+			var s = getComputedStyle(canvas_obj);
+			var w = s.width.split('px')[0];
+			var h = s.height.split('px')[0];
+			canvas_obj.width = w;
+			canvas_obj.height = h;
+			var canvas = new FourColors("canvas", paint_colors);
 
-
-			var N = 5;
 
 			// Set color buttons
 			b_c0 = document.getElementById("col0");
@@ -104,16 +109,7 @@
 			for (var i = 0; i < buttons.length; i++)
 				buttons[i].style.backgroundColor = paint_colors[i];
 
-			// Init canvas size
-			canvas_obj = document.getElementById("canvas");
-			var s = getComputedStyle(canvas_obj);
-			var w = s.width.split('px')[0];
-			var h = s.height.split('px')[0];
-			canvas_obj.width = w;
-			canvas_obj.height = h;
 
-
-			var canvas = new FourColors("canvas", paint_colors, N);
 			
 			function setColor(i)
 			{
@@ -129,9 +125,6 @@
 			b_c2.onclick = function() { setColor(2); }
 			b_c3.onclick = function() { setColor(3); }
 			b_c4.onclick = function() { setColor(4); }
-
-			// Select first color as default
-			setColor(1);
 
 			// Set pop-up functionality
 			var modal_intro = document.getElementById("help-box");
@@ -149,22 +142,25 @@
 			}
 
 			// Set menu funciontionality
-			b_easy = document.getElementById("easy");
-			b_med = document.getElementById("medium");
-			b_hard = document.getElementById("hard");
 			document.getElementById("about").onclick = function() {
 				modal_about.style.display = "block";
 			}
+			document.getElementById("easy").onclick = function() { 
+				canvas.init(8);
+				setColor(1);
+			}
+			document.getElementById("medium").onclick = function() { 
+				canvas.init(30);
+				setColor(1);
+			}
+			document.getElementById("hard").onclick = function() { 
+				canvas.init(50);
+				setColor(1);
+			}
 
-			b_easy.onclick = function() { 
-				canvas = new FourColors("canvas", paint_colors, 8);
-			}
-			b_med.onclick = function() { 
-				canvas = new FourColors("canvas", paint_colors, 30);
-			}
-			b_hard.onclick = function() { 
-				canvas = new FourColors("canvas", paint_colors, 50);
-			 }
+			// Default init on medium level
+			canvas.init(30);
+			setColor(1);
 
 		</script>
 

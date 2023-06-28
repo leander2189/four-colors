@@ -1,7 +1,7 @@
 body
 {
     background-color: white;
-    color: black;
+    /*color: black;*/
     text-align: justify;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     line-height: 1.5em;
@@ -11,11 +11,12 @@ body
     width: 90%;
 }
 
+/*
 .container
 {
-  border: 1px solid black;
+  border: 0px solid black;
 }
-
+*/
 canvas
 {
     border-style: solid;
@@ -80,7 +81,7 @@ h1
 .dropdown:hover .dropdown-content {display: block;}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {background-color: #9b9b9b;}
 
 
 
