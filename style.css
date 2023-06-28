@@ -6,17 +6,15 @@ body
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     line-height: 1.5em;
     font-size: large;
-    max-width: 450px;
-    margin: 0 auto;
-    width: 90%;
 }
 
-/*
 .container
 {
-  border: 0px solid black;
+  max-width: 450px;
+  margin: 0 auto;
+  width: 90%;
+  /*border: 1px solid black;*/
 }
-*/
 canvas
 {
     border-style: solid;
@@ -29,6 +27,8 @@ canvas
 .title_area
 {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .title
 {
@@ -39,7 +39,6 @@ h1
 {
   font-size: 20px;
   text-align: center;
-  vertical-align: sub;
 }
 
 

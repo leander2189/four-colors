@@ -52,11 +52,10 @@
 	</div>
 
 	<div class="container">
-
 		<div class="title_area">
 			<div class="dropdown">
 				<button id="menu" class="dropbtn">
-					<img src="menu.png" width="20px"/>
+					<img src="menu.png" width="20px" class="img" />
 				</button>
 				<div class="dropdown-content">
 					<a id="easy">Facil</a>
@@ -98,6 +97,7 @@
 
 			// Set color buttons
 			b_c0 = document.getElementById("col0");
+			b_c0.style.display = 'none';
 			b_c1 = document.getElementById("col1");
 			b_c2 = document.getElementById("col2");
 			b_c3 = document.getElementById("col3");
@@ -156,6 +156,16 @@
 				canvas.init(50);
 				setColor(1);
 			}
+
+			// Manage finish event
+			canvas.addEventListener(
+				"finished",
+				(e) => {
+					var timer = document.getElementById("timer");
+					timer.innerText = e.detail.toFixed(1);
+            		modal_finish.style.display = "block";
+				}
+			);
 
 			// Default init on medium level
 			canvas.init(30);

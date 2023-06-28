@@ -105,11 +105,11 @@ class FourColors
         var finished = this.checkComplete();
         if (finished)
         {
-            clearInterval(this.clock);
-
-            // Show finisher popup
-            var modal = document.getElementById("congrats-box");
-            modal.style.display = "block";
+            // Throw event for finish popup
+            var totalTime = (new Date().getTime() - this.timeInit)/1000.0;
+            console.log(totalTime);
+            event = new CustomEvent("finished", { detail: totalTime });
+            this.canvas.dispatchEvent(event);
         }
     }
 
@@ -147,5 +147,9 @@ class FourColors
         });
 
         return everythingPainted && noErrors;
+    }
+
+    addEventListener(event, listener) {
+        this.canvas.addEventListener(event, listener);
     }
 }
