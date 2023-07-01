@@ -153,3 +153,14 @@ h1
     text-decoration: none;
     cursor: pointer;
   }
+
+  .big_text
+  {
+    color: green;
+    font-size: 50px;
+  }
+
+  #congrats-box
+  {
+    text-align: center;
+  }
