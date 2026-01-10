@@ -10,6 +10,7 @@
 	<link rel="icon" href="icon.png">
 	<script src="https://d3js.org/d3.v7.min.js"></script>
 	<script src="four_colors.js"></script>
+	<script src="leaderboard.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="Four colors" />
 	<meta property="og:image" content="preview.png" />
@@ -27,12 +28,14 @@
 		</div>
 	</div>
 
-	<!-- Intro pop-up -->
+	<!-- Congrats pop-up -->
 	<div id="congrats-box" class="modal">
 		<div class="modal-content">
 			<span class="close" id="closebtn_2">&times;</span>
 			<p>Congratulations! You have completed the map in</p>
 			<p class="big_text" id="timer">5.0 s</p>
+			<p id="rank-message" class="rank-message"></p>
+			<button id="view-leaderboard-btn" class="submit-btn">View Leaderboard</button>
 		</div>
 	</div>
 
@@ -52,6 +55,42 @@
 		</div>
 	</div>
 
+	<!-- Leaderboard pop-up -->
+	<div id="leaderboard-box" class="modal">
+		<div class="modal-content leaderboard-modal">
+			<span class="close" id="closebtn_4">&times;</span>
+			<h2>Leaderboard</h2>
+			<div class="tab-buttons">
+				<button class="tab-btn active" data-mode="easy">Easy</button>
+				<button class="tab-btn" data-mode="medium">Medium</button>
+				<button class="tab-btn" data-mode="hard">Hard</button>
+			</div>
+			<table id="leaderboard-table" class="score-table">
+				<thead>
+					<tr><th>#</th><th>Player</th><th>Time</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<h3>Your Recent Games</h3>
+			<table id="recent-games-table" class="score-table">
+				<thead>
+					<tr><th>Mode</th><th>Time</th><th>Date</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- Nickname input pop-up -->
+	<div id="nickname-box" class="modal">
+		<div class="modal-content nickname-modal">
+			<h2>Enter Your Name</h2>
+			<p>Your name will appear on the leaderboard.</p>
+			<input type="text" id="nickname-input" maxlength="20" placeholder="Your nickname" />
+			<button id="nickname-submit" class="submit-btn">Save</button>
+		</div>
+	</div>
+
 	<div class="container">
 		<div class="title_area">
 			<div class="dropdown">
@@ -62,6 +101,7 @@
 					<a id="easy">Easy</a>
 					<a id="medium">Medium</a>
 					<a id="hard">Hard</a>
+					<a id="leaderboard-btn">Leaderboard</a>
 					<a id="about">About the game</a>
 				</div>
 			</div>
@@ -96,6 +136,9 @@
 			var paint_colors = ['#252540', '#c084fc', '#38bdf8', '#4ade80', '#fbbf24'];
 			var canvas = new FourColors("canvas", paint_colors);
 
+			// Track current game mode
+			var currentMode = 'medium';
+
 			// Set color buttons
 			b_c0 = document.getElementById("col0");
 			b_c0.style.display = 'none';
@@ -108,8 +151,6 @@
 
 			for (var i = 0; i < buttons.length; i++)
 				buttons[i].style.backgroundColor = paint_colors[i];
-
-
 
 			function setColor(i)
 			{
@@ -130,7 +171,11 @@
 			var modal_intro = document.getElementById("help-box");
 			var modal_finish = document.getElementById("congrats-box");
 			var modal_about = document.getElementById("about-box");
+			var modal_leaderboard = document.getElementById("leaderboard-box");
+			var modal_nickname = document.getElementById("nickname-box");
+
 			modal_intro.style.display = "block";
+
 			document.getElementById("closebtn_1").onclick = function() {
 				modal_intro.style.display = "none";
 			}
@@ -140,31 +185,171 @@
 			document.getElementById("closebtn_3").onclick = function() {
 				modal_about.style.display = "none";
 			}
+			document.getElementById("closebtn_4").onclick = function() {
+				modal_leaderboard.style.display = "none";
+			}
 
-			// Set menu funciontionality
+			// Set menu functionality
 			document.getElementById("about").onclick = function() {
 				modal_about.style.display = "block";
 			}
 			document.getElementById("easy").onclick = function() {
+				currentMode = 'easy';
 				canvas.init(8);
 				setColor(1);
 			}
 			document.getElementById("medium").onclick = function() {
+				currentMode = 'medium';
 				canvas.init(30);
 				setColor(1);
 			}
 			document.getElementById("hard").onclick = function() {
+				currentMode = 'hard';
 				canvas.init(50);
 				setColor(1);
+			}
+
+			// Leaderboard functionality
+			var currentLeaderboardMode = 'easy';
+
+			document.getElementById("leaderboard-btn").onclick = function() {
+				showLeaderboard('easy');
+			}
+
+			document.getElementById("view-leaderboard-btn").onclick = function() {
+				modal_finish.style.display = "none";
+				showLeaderboard(currentMode);
+			}
+
+			// Tab buttons
+			document.querySelectorAll('.tab-btn').forEach(btn => {
+				btn.onclick = function() {
+					showLeaderboard(this.dataset.mode);
+				}
+			});
+
+			async function showLeaderboard(mode) {
+				currentLeaderboardMode = mode;
+				modal_leaderboard.style.display = "block";
+
+				// Update active tab
+				document.querySelectorAll('.tab-btn').forEach(btn => {
+					btn.classList.toggle('active', btn.dataset.mode === mode);
+				});
+
+				// Fetch and display leaderboard
+				const tbody = document.querySelector('#leaderboard-table tbody');
+				tbody.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
+
+				const scores = await Leaderboard.fetchLeaderboard(mode);
+				if (scores && scores.length > 0) {
+					tbody.innerHTML = scores.map((s, i) =>
+						`<tr class="${i < 3 ? 'top-' + (i + 1) : ''}">
+							<td>${i + 1}</td>
+							<td>${escapeHtml(s.player_name)}</td>
+							<td>${Leaderboard.formatTime(s.time_seconds)}</td>
+						</tr>`
+					).join('');
+				} else if (scores) {
+					tbody.innerHTML = '<tr><td colspan="3">No scores yet. Be the first!</td></tr>';
+				} else {
+					tbody.innerHTML = '<tr><td colspan="3">Could not load leaderboard</td></tr>';
+				}
+
+				// Display recent games
+				updateRecentGames();
+			}
+
+			function updateRecentGames() {
+				const tbody = document.querySelector('#recent-games-table tbody');
+				const games = Leaderboard.getRecentGames();
+
+				if (games.length > 0) {
+					tbody.innerHTML = games.map(g =>
+						`<tr>
+							<td>${Leaderboard.getModeDisplay(g.mode)}</td>
+							<td>${Leaderboard.formatTime(g.time)}</td>
+							<td>${Leaderboard.formatDate(g.date)}</td>
+						</tr>`
+					).join('');
+				} else {
+					tbody.innerHTML = '<tr><td colspan="3">No games played yet</td></tr>';
+				}
+			}
+
+			function escapeHtml(text) {
+				const div = document.createElement('div');
+				div.textContent = text;
+				return div.innerHTML;
+			}
+
+			// Nickname handling
+			var pendingScore = null;
+
+			document.getElementById("nickname-submit").onclick = async function() {
+				const input = document.getElementById("nickname-input");
+				const name = input.value.trim();
+				if (name.length > 0) {
+					Leaderboard.setNickname(name);
+					modal_nickname.style.display = "none";
+					if (pendingScore) {
+						await submitPendingScore();
+					}
+				}
+			}
+
+			document.getElementById("nickname-input").addEventListener('keypress', function(e) {
+				if (e.key === 'Enter') {
+					document.getElementById("nickname-submit").click();
+				}
+			});
+
+			async function submitPendingScore() {
+				if (!pendingScore) return;
+
+				const result = await Leaderboard.submitScore(
+					Leaderboard.getNickname(),
+					pendingScore.mode,
+					pendingScore.time
+				);
+
+				const rankMsg = document.getElementById("rank-message");
+				if (result && result.isTopTen) {
+					rankMsg.textContent = `You ranked #${result.rank} on the ${Leaderboard.getModeDisplay(pendingScore.mode)} leaderboard!`;
+					rankMsg.className = 'rank-message top-rank';
+				} else if (result) {
+					rankMsg.textContent = `Your rank: #${result.rank}`;
+					rankMsg.className = 'rank-message';
+				} else {
+					rankMsg.textContent = '';
+				}
+
+				pendingScore = null;
 			}
 
 			// Manage finish event
 			canvas.addEventListener(
 				"finished",
-				(e) => {
+				async (e) => {
+					const time = e.detail;
 					var timer = document.getElementById("timer");
-					timer.innerText = e.detail.toFixed(1) + " s";
-            		modal_finish.style.display = "block";
+					timer.innerText = time.toFixed(1) + " s";
+
+					// Save to recent games
+					Leaderboard.saveRecentGame(currentMode, time);
+
+					// Prepare score submission
+					pendingScore = { mode: currentMode, time: time };
+
+					// Check if we have a nickname
+					if (!Leaderboard.hasNickname()) {
+						document.getElementById("nickname-input").value = '';
+						modal_nickname.style.display = "block";
+					} else {
+						await submitPendingScore();
+					}
+
+					modal_finish.style.display = "block";
 				}
 			);
 
