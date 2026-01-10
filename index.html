@@ -3,6 +3,9 @@
   <head>
 	<meta charset="utf-8">
 	<title>4 Colors</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
 	<link rel="icon" href="icon.png">
 	<script src="https://d3js.org/d3.v7.min.js"></script>
@@ -17,9 +20,8 @@
 	<div id="help-box" class="modal">
 		<div class="modal-content">
 			<span class="close" id="closebtn_1">&times;</span>
-			<p>Bienvenido a Four colors.</p>
-			<p>El objetivo del juego es colorear por completo el mapa de tal forma que 2 regiones conectadas siempre
-				tengan distinto color.
+			<p>Welcome to Four colors.</p>
+			<p>The objective of the game is to color the entire map so that 2 connected regions always have a different color.
 			</p>
 			<p></p>
 		</div>
@@ -29,7 +31,7 @@
 	<div id="congrats-box" class="modal">
 		<div class="modal-content">
 			<span class="close" id="closebtn_2">&times;</span>
-			<p>¡¡Enhorabuena!! Has conseguido completar el mapa en</p>
+			<p>Congratulations! You have completed the map in</p>
 			<p class="big_text" id="timer">5.0 s</p>
 		</div>
 	</div>
@@ -38,16 +40,15 @@
 	<div id="about-box" class="modal">
 		<div class="modal-content">
 			<span class="close" id="closebtn_3">&times;</span>
-			<p>El teorema de los 4 colores es uno de los resultados más conocidos y llamativos de la teoría de grafos. Este teorema
-				establece que cualquier mapa geográfico en un plano, puede ser coloreado con solo 4 colores de manera que ninguna
-				región adyacente tenga el mismo color.</p>
-			<p>Este problema fue planteado por primera vez en el siglo XIX, aunque sólo pudo ser demostrado en 1976 utilizando métodos
-				computacionales.</p>
-			<p>Este teorema ha encontrado aplicaciones en diversos campos, como la cartografía, la planificación de horarios y la
-				asignación de recursos. En resumen, es un resultado sorprendente que lo convierte en uno de los logros más
-				reconocidos y emocionantes en la historia de las matemáticas.</p>
-			<p>Para saber más visita <a href="https://es.wikipedia.org/wiki/Teorema_de_los_cuatro_colores">Teorema de los Cuatro Colores</a></p>
-			<p>Copyright: Leandro Ruiz, 2023</p>
+			<p>The four color theorem is one of the most well-known and remarkable results in graph theory. This theorem
+				establishes that any geographic map on a plane can be colored with only 4 colors in such a way that no
+				adjacent regions have the same color.</p>
+			<p>This problem was first posed in the 19th century, although it could only be proven in 1976 using computational methods.</p>
+			<p>This theorem has found applications in various fields, such as cartography, scheduling and resource
+				allocation. In summary, it is a surprising result that makes it one of the most recognized and exciting
+				achievements in the history of mathematics.</p>
+			<p>To learn more visit <a href="https://en.wikipedia.org/wiki/Four_color_theorem">Four color theorem</a></p>
+			<p>Copyright: Leandro Ruiz, 2026</p>
 		</div>
 	</div>
 
@@ -58,10 +59,10 @@
 					<img src="menu.png" width="20px" class="img" />
 				</button>
 				<div class="dropdown-content">
-					<a id="easy">Facil</a>
-					<a id="medium">Medio</a>
-					<a id="hard">Dificil</a>
-					<a id="about">Sobre el juego</a>
+					<a id="easy">Easy</a>
+					<a id="medium">Medium</a>
+					<a id="hard">Hard</a>
+					<a id="about">About the game</a>
 				</div>
 			</div>
 
@@ -92,7 +93,7 @@
 			var h = s.height.split('px')[0];
 			canvas_obj.width = w;
 			canvas_obj.height = h;
-			var paint_colors = ['white', '#e4c1f9', '#a9def9', '#d0f4de', '#fcf6bd'];
+			var paint_colors = ['#252540', '#c084fc', '#38bdf8', '#4ade80', '#fbbf24'];
 			var canvas = new FourColors("canvas", paint_colors);
 
 			// Set color buttons

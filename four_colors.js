@@ -73,21 +73,34 @@ class FourColors
 
         // Print cells
         this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = '#5a5a7c';
         for (var i = 0; i < this.n; i++)
         {
             this.ctx.fillStyle = this.PaintColors[this.colors[i]];
-            if (this.error[i]) this.ctx.strokeStyle = 'red';
-            else this.ctx.strokeStyle = 'black';
             this.ctx.beginPath();
             this.voronoi.renderCell(i, this.ctx);
             this.ctx.stroke();
             this.ctx.fill();
         }
 
+        // 2nd pass - errors
+        this.ctx.strokeStyle = '#ef4444';
+        this.ctx.lineWidth = 3;
+        for (var i = 0; i < this.n; i++)
+        {
+            //this.ctx.fillStyle = this.PaintColors[this.colors[i]];
+            if (!this.error[i]) continue;
+            this.ctx.beginPath();
+            this.voronoi.renderCell(i, this.ctx);
+            this.ctx.stroke();
+            //this.ctx.fill();
+        }
+
         // Print selected
         if (this.selected != null)
         {
             this.ctx.lineWidth = 3;
+            this.ctx.strokeStyle = '#a78bfa';
             this.ctx.beginPath();
             this.voronoi.renderCell(this.selected, this.ctx);
             this.ctx.stroke();
